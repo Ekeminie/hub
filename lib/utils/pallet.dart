@@ -31,6 +31,12 @@ class Pallet {
   static Color lightOrangeColor;
   static Color hintTextColor;
 
+
+  //colors for Hub App
+  static Color bgColor = Colors.grey.shade100;
+  static Color cardBgColor = Color(0xFFd7d6d5);
+  static Color primaryBlue = Colors.blue.shade800;
+
   // onboarding background
   static Color backgroundColorOnboarding;
   //commom button color
@@ -93,11 +99,4 @@ class Pallet {
     }
   }
 
-  // static void loadColor(BuildContext context) {
-  //   if (Utils.isLightMode(context)) {
-  //     _loadLightColors();
-  //   } else {
-  //     _loadDarkColors();
-  //   }
-  // }
 }
