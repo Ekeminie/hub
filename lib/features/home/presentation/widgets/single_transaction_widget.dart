@@ -90,7 +90,6 @@ class _TransactionItemWidgetState extends State<TransactionItemWidget> {
             SizedBox(
               height: 10.h,
             ),
-           
             Expanded(
               child: ListView.builder(
                   itemCount: widget.singleTransactionItem?.length,
