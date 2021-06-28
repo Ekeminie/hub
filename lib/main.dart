@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get.dart';
+import 'package:hub/features/nfc_reader.dart';
 import 'features/home/controller/single_transaction_controller.dart';
 import 'features/home/presentation/homepage.dart';
+import 'features/onboarding.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,7 +30,7 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 primarySwatch: Colors.blue,
               ),
-              home: HomePage(),
+              home: NfcScan(),
             )
     );
   }

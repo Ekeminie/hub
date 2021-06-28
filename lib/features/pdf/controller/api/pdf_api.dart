@@ -7,10 +7,6 @@ import 'package:pdf/widgets.dart';
 class PdfApi {
   static Future<File> generateCenteredText(String text) async {
 
-    // final Uint8List fontData = (await rootBundle.load("assets/OpenSans-Regular.ttf")) as Uint8List;
-    // final font = await rootBundle.load("assets/fonts/Open-Sans.ttf");
-    // final Font ttff = Font.ttf(fontData.buffer.asByteData());
-    // final ttf = Font.ttf(font);
     final pdf = Document();
 
     pdf.addPage(Page(

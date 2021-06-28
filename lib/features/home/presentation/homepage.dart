@@ -1,6 +1,10 @@
 
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hub/core/ui/widgets/error_widget.dart';
+import 'package:hub/core/ui/widgets/toast.dart';
 import 'package:hub/features/model/customer.dart';
 import 'package:hub/features/model/invoice.dart';
 import 'package:hub/features/model/supplier.dart';
@@ -8,6 +12,7 @@ import 'package:hub/features/pdf/api/pdf_api.dart';
 import 'package:hub/features/pdf/api/pdf_invoice_api.dart';
 import 'package:hub/features/pdf/presentation/pages/view_pdf_page.dart';
 import 'package:hub/utils/dateutils.dart';
+import 'package:nfc_manager/nfc_manager.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -21,6 +26,8 @@ import 'package:hub/features/qrcode/presentation/pages/view_qrcode_page.dart';
 import 'package:hub/utils/pallet.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'bloc/nfc_bloc.dart';
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -31,6 +38,23 @@ class _HomePageState extends State<HomePage> {
       Get.find<SingleTransactionController>();
   SingleTransactionItem selectedItem;
 
+  final _bloc = NfcBloc();
+
+
+  @override
+  void initState() {
+    super.initState();
+    tech =  Ndef.from(NfcTag(handle: "test", data: {
+    'test':"testing"
+    }));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.close();
+  }
+  var tech;
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -40,27 +64,53 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Pallet.bgColor,
-        body: Container(
-          padding: EdgeInsets.only(top: 20.h, right: 20.w, left: 20.w),
-          child: NotificationListener<ScrollNotification>(
-            onNotification: (scrollNotification) {
-              if (scrollNotification is ScrollStartNotification) {
-                singleTransactionController
-                    .onStartScroll(scrollNotification.metrics);
-                setState(() {});
-              } else if (scrollNotification is ScrollUpdateNotification) {
-                singleTransactionController
-                    .onUpdateScroll(scrollNotification.metrics);
-                setState(() {});
-              } else if (scrollNotification is ScrollEndNotification) {
-                singleTransactionController
-                    .onEndScroll(scrollNotification.metrics);
-                setState(() {});
-              }
-            },
-            child: TransactionItemWidget(selected: (val){
-              selectedItem = val;
-            },singleTransactionItem: singleTransactionController.mockListItem,),
+        body: BlocListener(
+          bloc:_bloc,
+          listener:(context, state){
+            if(state is NfcNotSupportedState){
+              // return NfcError();
+            }
+            if(state is NfcSuccessState){
+              flutterToast(state.nfcData, false);
+            }
+          },
+          child: Container(
+            padding: EdgeInsets.only(top: 20.h, right: 20.w, left: 20.w),
+            child: NotificationListener<ScrollNotification>(
+              onNotification: (scrollNotification) {
+                if (scrollNotification is ScrollStartNotification) {
+                  singleTransactionController
+                      .onStartScroll(scrollNotification.metrics);
+                  setState(() {});
+                } else if (scrollNotification is ScrollUpdateNotification) {
+                  singleTransactionController
+                      .onUpdateScroll(scrollNotification.metrics);
+                  setState(() {});
+                } else if (scrollNotification is ScrollEndNotification) {
+                  singleTransactionController
+                      .onEndScroll(scrollNotification.metrics);
+                  setState(() {});
+                }
+              },
+              child: TransactionItemWidget(scanAction: ()async{
+
+
+                await tech.write(NdefMessage(<NdefRecord>[
+                  NdefRecord.createText("test"),
+                  NdefRecord.createText("test"),
+                ]));
+
+                await NfcManager.instance.startSession(
+                  onDiscovered: (NfcTag tag) async {
+                    print("discovered");
+                  },
+                );
+                //_bloc.add(StartNFCEvent());
+              },selected: (val){
+
+                selectedItem = val;
+              },singleTransactionItem: singleTransactionController.mockListItem,),
+            ),
           ),
         ),
         floatingActionButton: GetX<SingleTransactionController>(
@@ -87,7 +137,6 @@ class _HomePageState extends State<HomePage> {
                           onTap: () {
                             if (selectedItem != null) {
                               var expenses;
-
                                 expenses = "\n Title: " +
                                     selectedItem.title +
                                     "\n" +

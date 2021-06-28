@@ -160,6 +160,22 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+  flutter_nfc_kit:
+    dependency: "direct main"
+    description:
+      name: flutter_nfc_kit
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.1"
+  flutter_nfc_reader:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: develop
+      resolved-ref: "888b03c7158440959d660dca26ee8951c84263c6"
+      url: "git://github.com/matteocrippa/flutter-nfc-reader.git"
+    source: git
+    version: "0.1.1"
   flutter_screenutil:
     dependency: "direct main"
     description:
@@ -261,6 +277,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3"
+  json_annotation:
+    dependency: transitive
+    description:
+      name: json_annotation
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.1"
   kiwi:
     dependency: "direct main"
     description:
@@ -282,6 +305,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.0"
+  ndef:
+    dependency: transitive
+    description:
+      name: ndef
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.3"
   nested:
     dependency: transitive
     description:
@@ -289,6 +319,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  nfc_in_flutter:
+    dependency: "direct main"
+    description:
+      name: nfc_in_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.5"
   nfc_manager:
     dependency: "direct main"
     description:

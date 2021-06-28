@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 
@@ -27,6 +28,22 @@ class SingleTransactionItem {
   bool isSelected = false;
 
   SingleTransactionItem({this.title, this.subTitle, this.price, this.icon, this.amount, this.date, this.isSelected = false});
+
+  SingleTransactionItem.fromJson(Map<String, dynamic> json)
+      : title = json['title'],
+        subTitle = json['subtitle'],
+  price= json['price'],
+  date = json['date'],
+  amount = json['amount'];
+
+
+  Map<String, dynamic> toJson() => {
+    'title':title,
+    'subtitle':subTitle,
+    'price':price,
+    'date':date,
+    'amount':amount
+  };
 }
 
 

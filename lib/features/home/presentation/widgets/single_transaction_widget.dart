@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hub/features/home/controller/single_transaction_controller.dart';
 import 'package:hub/features/home/data/models/TransactionModel.dart';
@@ -11,9 +12,9 @@ class TransactionItemWidget extends StatefulWidget {
   final List<SingleTransactionItem> singleTransactionItem;
   final ValueChanged<SingleTransactionItem>selected;
 
+  final VoidCallback scanAction;
 
-
-  TransactionItemWidget({this.singleTransactionItem, this.selected});
+  TransactionItemWidget({this.singleTransactionItem, this.selected, this.scanAction});
 
   @override
   _TransactionItemWidgetState createState() => _TransactionItemWidgetState();
@@ -24,6 +25,8 @@ class _TransactionItemWidgetState extends State<TransactionItemWidget> {
 
   SingleTransactionController singleTransactionController =
       Get.find<SingleTransactionController>();
+
+
 
 
   double sumItemsWithSameDates(String date){
@@ -47,33 +50,40 @@ class _TransactionItemWidgetState extends State<TransactionItemWidget> {
             borderRadius: BorderRadius.all(Radius.circular(10))),
         child: Column(
           children: [
-            Center(
-              child: Padding(
-                padding: EdgeInsets.only(
-                    right: 20.w, left: 20.w, top: 10.h, bottom: 10.h),
-                child: Container(
-                  height: 50.h,
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: Pallet.cardBgColor,
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: "Search",
-                      suffixIcon:
-                      Icon(Icons.filter_list, color: Pallet.primaryBlue),
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      contentPadding: EdgeInsets.all(10),
+            Row(children: [
+              Expanded(
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        right: 20.w, left: 20.w, top: 10.h, bottom: 10.h),
+                    child: Container(
+                      height: 50.h,
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: Pallet.cardBgColor,
+                      ),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: "Search",
+                          suffixIcon:
+                          Icon(Icons.filter_list, color: Pallet.primaryBlue),
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          contentPadding: EdgeInsets.all(10),
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
+              IconButton(icon:Icon(Icons.scanner_sharp,  color:Colors.blue),onPressed: (){
+                widget.scanAction();
+              },)
+            ],),
             SizedBox(
               height: 30.h,
             ),
